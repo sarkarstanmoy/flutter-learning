@@ -11,8 +11,8 @@ class HelloWorld extends StatelessWidget {
       title: 'Hello World',
       home: SafeArea(
         child: Center(
-          child: Container(
-            child: Text('HelloWorld'),
+          child: Expanded(
+            child: Text('Hello13'),
           ),
         ),
       ),
