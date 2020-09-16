@@ -5,18 +5,10 @@ import 'Screens/entry.dart';
 
 void main() {
   runApp(
-    MaterialApp(
-      title: "TODO APP",
-      color: Colors.teal,
-      routes: {
-        '/enter': (context) => TodoEntry(),
-      },
-      home: ChangeNotifierProvider(
-        create: (context) => TodoService(),
-        builder: (context, child) {
-          return Main();
-        },
-        child: Main(),
+    ChangeNotifierProvider(
+      create: (context) => TodoService(),
+      child: MaterialApp(
+        home: Main(),
       ),
     ),
   );
@@ -45,7 +37,9 @@ class Main extends StatelessWidget {
                     child: Container(
                       height: 50,
                       child: Center(
-                        child: Text('yyy'),
+                        child: Text(_todoService.todoList[index].values
+                            .toList()[1]
+                            .toString()),
                       ),
                     ),
                   );
@@ -58,7 +52,8 @@ class Main extends StatelessWidget {
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
-            Navigator.pushNamed(context, "/enter");
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => TodoEntry()));
           },
           backgroundColor: Colors.green,
         ),

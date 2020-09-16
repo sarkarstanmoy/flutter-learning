@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo/Services/todoService.dart';
 
 class TodoEntry extends StatelessWidget {
@@ -41,6 +42,7 @@ class TodoEntry extends StatelessWidget {
                   if (_formKey.currentState.validate()) {
                     TodoService todoService = TodoService();
                     todoService.addTodo(entryController.text);
+                    Navigator.pop(context);
                   }
                 },
               )
