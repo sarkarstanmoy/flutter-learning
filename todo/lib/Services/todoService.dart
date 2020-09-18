@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:todo/Repository/todoRepository.dart';
 
 class TodoService extends ChangeNotifier {
-  // TodoService() {
-  //   getAll();
-  // }
+  TodoService() {
+    getAll();
+  }
   List<Map<String, dynamic>> todoList = [];
   getAll() async {
     todoList = await TodoRepository.instance.getAll();
@@ -18,7 +18,11 @@ class TodoService extends ChangeNotifier {
         TodoRepository.instance.dateColumn: DateTime.now().toString()
       },
     );
-    todoList.add({'test': DateTime.now().toIso8601String()});
-    notifyListeners();
+    getAll();
+  }
+
+  remove(String id) async {
+    await TodoRepository.instance.delete(id);
+    getAll();
   }
 }

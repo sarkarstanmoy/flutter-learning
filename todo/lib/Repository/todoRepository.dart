@@ -40,10 +40,10 @@ class TodoRepository {
     return await db.insert(tableName, row);
   }
 
-  Future delete(Map<String, dynamic> row) async {
+  Future delete(String id) async {
     Database db = await instance.database;
-    await db.delete("$tableName",
-        where: '$identityColumn = ?', whereArgs: [row[identityColumn]]);
+    await db
+        .delete("$tableName", where: '$identityColumn = ?', whereArgs: [id]);
   }
 
   Future<List<Map<String, dynamic>>> getAll() async {

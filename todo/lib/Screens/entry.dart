@@ -8,6 +8,7 @@ class TodoEntry extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var entry = Provider.of<TodoService>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: Text("ENTER TODO"),
@@ -40,9 +41,8 @@ class TodoEntry extends StatelessWidget {
                 child: Text("Done"),
                 onPressed: () {
                   if (_formKey.currentState.validate()) {
-                    TodoService todoService = TodoService();
-                    todoService.addTodo(entryController.text);
-                    Navigator.pop(context);
+                    entry.addTodo(entryController.text);
+                    Navigator.pop(context, true);
                   }
                 },
               )
