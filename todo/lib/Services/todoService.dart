@@ -11,11 +11,11 @@ class TodoService extends ChangeNotifier {
     notifyListeners();
   }
 
-  addTodo(String task) async {
+  addTodo(String task, String selectedDate) async {
     await TodoRepository.instance.insert(
       {
         TodoRepository.instance.textColumn: task,
-        TodoRepository.instance.dateColumn: DateTime.now().toString()
+        TodoRepository.instance.dateColumn: selectedDate
       },
     );
     getAll();

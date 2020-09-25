@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hello_world/random_words.dart';
+import 'package:hello_world/silvergridtest.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -19,11 +20,24 @@ class HelloWorld extends StatelessWidget {
       title: 'Hello World',
       home: Scaffold(
         body: SafeArea(
-          child: Consumer<RandomWords>(
-            builder: (context, value, child) => Center(
-              child: Text(value.word),
+          child: Column(children: [
+            RaisedButton(
+              child: Text("Silver Grid"),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SilverGridTest(),
+                  ),
+                );
+              },
             ),
-          ),
+            Consumer<RandomWords>(
+              builder: (context, value, child) => Center(
+                child: Text(value.word),
+              ),
+            )
+          ]),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () => {randomwords.getWords()},

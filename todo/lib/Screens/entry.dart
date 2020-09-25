@@ -9,6 +9,7 @@ class TodoEntry extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var entry = Provider.of<TodoService>(context, listen: false);
+    DateTime picked = DateTime.now();
     return Scaffold(
       appBar: AppBar(
         title: Text("ENTER TODO"),
@@ -38,10 +39,29 @@ class TodoEntry extends StatelessWidget {
                 ),
               ),
               RaisedButton(
+                onPressed: () async {
+                  picked = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2025),
+                  );
+                },
+                child: Text("Select Date"),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Selected Date"),
+                  Text("${picked.day}-${picked.month}-${picked.year}")
+                ],
+              ),
+              RaisedButton(
                 child: Text("Done"),
                 onPressed: () {
                   if (_formKey.currentState.validate()) {
-                    entry.addTodo(entryController.text);
+                    entry.addTodo(entryController.text,
+                        "${picked.day}-${picked.month}-${picked.year}");
                     Navigator.pop(context, true);
                   }
                 },
