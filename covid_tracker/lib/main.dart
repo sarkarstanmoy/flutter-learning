@@ -1,0 +1,100 @@
+import 'package:covid_tracker/data.dart';
+import 'package:covid_tracker/repository.dart';
+import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
+
+void main() {
+  runApp(
+    FutureProvider<List<Data>>(
+      create: (context) => CountryRepository().getCovidData,
+      child: MyApp(),
+    ),
+  );
+}
+
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Covid Tracker',
+      theme: ThemeData(
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: LandingPage(),
+    );
+  }
+}
+
+class LandingPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await new Future.delayed(const Duration(seconds: 2));
+          //showMessage(context);
+          return;
+        },
+        child: CustomScrollView(slivers: <Widget>[
+          SliverAppBar(
+            title: Text("Covid Tracker"),
+            floating: true,
+            flexibleSpace: Placeholder(),
+            expandedHeight: 200,
+          ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                return Consumer(builder: (context, List<Data> d, child) {
+                  return _buildItem(d[index]);
+                });
+              },
+            ),
+            // delegate: SliverChildBuilderDelegate((context, index) {
+
+            //   return _buildItem(covidrecords[index]);
+            // }, childCount: covidrecords.length),
+          )
+        ]),
+      ),
+    );
+  }
+
+  void showMessage(BuildContext context) {
+    Scaffold.of(context).showSnackBar(
+      SnackBar(
+        content: Text("Refreshed"),
+      ),
+    );
+  }
+
+  Widget _buildItem(Data e) {
+    return Card(
+      child: ExpansionTile(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Column(
+                children: [Text("Deaths"), Text(e.deaths.toString())],
+              ),
+              Text(e.cases.toString())
+            ],
+          )
+        ],
+        title: Text(e.country),
+        subtitle: Row(
+          children: [
+            Text("Active"),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(e.active.toString()),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
