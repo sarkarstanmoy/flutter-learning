@@ -31,6 +31,8 @@ class MyApp extends StatelessWidget {
 class LandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var futureProvider = Provider.of<List<Data>>(context);
+
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: () async {
@@ -47,13 +49,11 @@ class LandingPage extends StatelessWidget {
             backgroundColor: Colors.teal.shade100,
           ),
           SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                return Consumer(builder: (context, List<Data> d, child) {
-                  return _buildItem(d[index]);
-                });
-              },
-            ),
+            delegate: SliverChildBuilderDelegate((context, index) {
+              return Consumer(builder: (context, List<Data> d, child) {
+                return _buildItem(d[index]);
+              });
+            }, childCount: futureProvider.length ?? 0),
             // delegate: SliverChildBuilderDelegate((context, index) {
 
             //   return _buildItem(covidrecords[index]);
