@@ -26,4 +26,14 @@ void main() {
 
     expect(res[0].country, "Afghanistan");
   });
+
+  test('get_flag_success', () async {
+    var url = 'https://corona.lmao.ninja/v2/countries?yesterday&sort';
+    var response = await http.get(url);
+    var body = json.decode(response.body);
+    List<Data> res = List<Data>.from(body.map((i) => Data.fromJson(i)));
+    var flag =
+        "https://www.countryflags.io/${res[0].countryInfo.iso2}/shiny/64.png";
+    expect(res[0].country, "Afghanistan");
+  });
 }

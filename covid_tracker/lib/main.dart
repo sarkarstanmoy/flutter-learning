@@ -8,6 +8,7 @@ void main() {
   runApp(
     FutureProvider<List<Data>>(
       create: (context) => CountryRepository().getCovidData,
+      initialData: covidrecords,
       child: MyApp(),
     ),
   );
@@ -41,8 +42,9 @@ class LandingPage extends StatelessWidget {
           SliverAppBar(
             title: Text("Covid Tracker"),
             floating: true,
-            flexibleSpace: Placeholder(),
-            expandedHeight: 200,
+            flexibleSpace: Image.asset('images/COVID.jpg'),
+            expandedHeight: 150,
+            backgroundColor: Colors.teal.shade100,
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
@@ -84,7 +86,14 @@ class LandingPage extends StatelessWidget {
             ],
           )
         ],
-        title: Text(e.country),
+        title: Row(
+          children: [
+            if (e.countryInfo != null)
+              Image.network(
+                  "https://www.countryflags.io/${e.countryInfo.iso2}/shiny/64.png"),
+            Padding(padding: const EdgeInsets.all(8.0), child: Text(e.country)),
+          ],
+        ),
         subtitle: Row(
           children: [
             Text("Active"),
