@@ -8,7 +8,7 @@ void main() {
   runApp(
     FutureProvider<List<Data>>(
       create: (context) => CountryRepository().getCovidData,
-      initialData: covidrecords,
+      //initialData: covidrecords,
       child: MyApp(),
     ),
   );
@@ -37,29 +37,38 @@ class LandingPage extends StatelessWidget {
       body: RefreshIndicator(
         onRefresh: () async {
           await new Future.delayed(const Duration(seconds: 2));
-          //showMessage(context);
           return;
         },
-        child: CustomScrollView(slivers: <Widget>[
-          SliverAppBar(
-            title: Text("Covid Tracker"),
-            floating: true,
-            flexibleSpace: Image.asset('images/COVID.jpg'),
-            expandedHeight: 150,
-            backgroundColor: Colors.teal.shade100,
-          ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate((context, index) {
-              return Consumer(builder: (context, List<Data> d, child) {
-                return _buildItem(d[index]);
-              });
-            }, childCount: futureProvider.length ?? 0),
-            // delegate: SliverChildBuilderDelegate((context, index) {
+        child: futureProvider == null
+            ? Container(child: Center(child: CircularProgressIndicator()))
+            : CustomScrollView(slivers: <Widget>[
+                SliverAppBar(
+                  title: Text("Covid Tracker"),
+                  floating: true,
+                  flexibleSpace: SizedBox.expand(
+                    child: Image.asset(
+                      'images/COVID.jpg',
+                      width: 300,
+                      height: 200,
+                    ),
+                  ),
+                  expandedHeight: 150,
+                  backgroundColor: Colors.teal.shade100,
+                ),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      // return Consumer(builder: (context, List<Data> d, child) {
+                      return _buildItem(futureProvider[index]);
+                      //})
+                    },
+                  ),
+                  // delegate: SliverChildBuilderDelegate((context, index) {
 
-            //   return _buildItem(covidrecords[index]);
-            // }, childCount: covidrecords.length),
-          )
-        ]),
+                  //   return _buildItem(covidrecords[index]);
+                  // }, childCount: covidrecords.length),
+                )
+              ]),
       ),
     );
   }
